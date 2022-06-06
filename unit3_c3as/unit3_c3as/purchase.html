@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Purchases</title>
+  </head>
+  <body>
+    <div id="navbar"><h1 id="wallet_balance"></h1></div>
+    <!-- <h1 id="wallet_balance">1233</h1> -->
+    <div id="purchased_vouchers"></div>
+    <h3 class="balance"></h3>
+    <
+   </div>
+    <!-- Wallet balence id:- "wallet_balance" (only number). -->
+    <!-- - All the purchased voucher will be appended in div with id as "purchased_vouchers".
+  - The remaining balance will show on the page inside h3 tag with id as "balance" -->
+  </body>
+</html>
+<script>
+  alert("Hurray! purchase successful")
+  alert("Sorry! insufficient balance")
+  let user=JSON.parse(localStorage.getItem("user"))
+user.map(function(el,index){
+    let wallet_balance=document.getElementById("wallet_balance")
+    wallet_balance.innerText=el.amount;
+})
+
+
+let data=JSON.parse(localStorage.getItem("purchase"))
+data.map(function(el,ind){
+    let purchased_voucher=document.getElementById("purchased_vouchers")
+let div=document.createElement("div")
+let name=document.createElement("h2")
+name.innerText=el.name
+let image=document.createElement("img")
+image.src=el.image
+let price=document.createElement("h2")
+price.innerText=`${el.price}`
+div.append(image,name,price)
+purchased_voucher.append(div)
+
+})
+
+
+
+</script>

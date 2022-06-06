@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Document</title>
+  </head>
+  <style>
+    #navbar{
+    background-color: royal blueviolet;
+    display: flex;
+    gap: 450px;
+}
+#voucher_list{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    
+}
+  </style>
+  <body>
+    <div id="navbar">
+    <h1 id="wallet_balance">0</h1>
+    <h1>Add money</h1>
+    <h1><a href="purchase.html">My Vaucher</a></h1></div>
+    <!-- <input type="number" placeholder="enter amount" id="amount"> -->
+    <!-- <button onclick="addamount()">Add Money</button> -->
+   <div class="voucher">voucher card</div>
+   <div id="voucher_list">
+     <button class="buy_voucher">Buy</button>
+   </div>
+
+    
+    <!-- Wallet balence id:- "wallet_balance" (only number). -->
+    <!-- - The voucher card will have class :- "voucher".
+  - All the vouchers will be appended inside div with id "voucher_list".
+  - Buy button will have class:- "buy_voucher"
+  - All the purchased voucher will be stored with key :- "purchase". -->
+  </body>
+</html>
+<script>
+let user=JSON.parse(localStorage.getItem("user"))
+user.map(function(el,ind){
+  let wallet=document.getElementById("wallet_balance")
+  wallet.innerText=el.amount
+})
+//   let Class;
+//   let voucher_div=document.getElementByClass("voucher")
+const url=`https://masai-vouchers-api.herokuapp.com/api/vouchers`
+ async function voucher1(){
+    try{
+     
+      let res=await fetch(url)
+      let data=await res.json();
+      // return data.Search
+      // console.log(data);
+      show(data[0])
+    }
+    catch(error){
+     console.log("error",error) 
+    }
+  }
+  voucher1()
+
+ 
+// let x=fetch(url);
+// console.log("x:",x)
+// const container=document.getElementByClass("voucher");
+// fetch(url)
+// .then(function(res){
+//     console.log("res:",res);
+//     return res.json();
+// })
+// .then(function(res){
+//     console.log("res:",res)
+//     appendData(res);
+
+// })
+// .catch(function(err){
+//     console.log("err:",err);
+
+// });
+//ctrl d to change all at a time
+let bag=JSON.parse(localStorage.getItem("purchase")) || []
+async function show(data){
+    // console.log(data);
+    data.vouchers.forEach(function(el){
+ let cont=document.getElementById("voucher_list")
+let div=document.createElement("div")
+ let name=document.createElement("p");
+ name.innerText=el.name;
+
+ let price=document.createElement("p");
+ price.innerText=el.price;
+
+ let image=document.createElement("img");
+ image.src=el.image;
+ let btn=document.createElement("button")
+ btn.innerText="Buy"
+//  btn.class="buy_voucher"
+ btn.addEventListener("click",function(){
+   addvoucher(el)
+ })
+ div.append(image,name,price,btn);
+ 
+ cont.append(div);
+ 
+ 
+    });
+    
+}
+
+async function addvoucher(el){
+  bag.push(el)
+}
+if(user.amount>el.price){
+  alert("Hurray! purchase successful")
+}
+else{
+  alert("Sorry! insufficient balance")
+
+  localStorage.setItem("purchase",JSON.stringify(bag))
+}
+</script>
